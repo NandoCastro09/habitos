@@ -12,7 +12,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Hábitos">
-<meta name="description" content="Acompanhe seus hábitos, sequências, humor e conquistas.">
+<meta name="description" content="Acompanhe seus hábitos, tarefas, sequências, humor e conquistas.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
@@ -153,10 +153,43 @@ a{color:inherit}
 .fab{position:fixed;right:max(16px,calc(50% - 264px));bottom:calc(var(--tabh) + 16px + env(safe-area-inset-bottom,0px));width:60px;height:60px;border-radius:20px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;box-shadow:0 6px 18px rgba(0,0,0,.18);z-index:20}
 .fab svg{width:28px;height:28px}
 
+/* tarefas */
+.seg button{line-height:1.15}
+.tseg button{font-size:.8rem;white-space:nowrap}
+.tseg small{font-size:.72rem;font-weight:800;opacity:.75}
+.tq{display:flex;gap:8px;margin-bottom:10px}
+.tq .inp{flex:1;min-width:0}
+.tq .btn{flex:none;width:48px;padding:0}
+.tq .btn svg{width:22px;height:22px}
+.ghead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.ghead button{font-size:.85rem;font-weight:700;color:var(--accent);margin:18px 4px 8px}
+.task{--c:var(--muted);display:flex;align-items:center;gap:2px;background:var(--surface);border-radius:16px;padding:4px 8px 4px 2px;box-shadow:var(--shadow),0 0 0 1px var(--line)}
+.card .task{background:var(--bg);box-shadow:none}
+.tcheck{flex:none;width:48px;height:48px;display:grid;place-items:center;border-radius:50%}
+.tcheck i{width:26px;height:26px;border-radius:50%;border:2.5px solid var(--c);display:grid;place-items:center;transition:background-color .15s}
+.tcheck svg{width:15px;height:15px;opacity:0;transform:scale(.6);transition:opacity .15s,transform .2s}
+.task.done .tcheck i{background:var(--c)}
+.task.done .tcheck svg{opacity:1;transform:scale(1)}
+.task-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;text-align:left;padding:8px 4px;border-radius:12px}
+.task .nm{font-size:.98rem}
+.task.done .nm{text-decoration:line-through;color:var(--muted)}
+.steps{margin-bottom:8px}
+.step{display:flex;align-items:center;gap:4px;border-top:1px solid var(--line);min-height:44px}
+.step:first-child{border-top:0}
+.step .nm{flex:1;min-width:0;font-size:.95rem;font-weight:500}
+.step.done .nm{text-decoration:line-through;color:var(--muted)}
+.scheck{flex:none;width:40px;height:40px;display:grid;place-items:center}
+.scheck i{width:22px;height:22px;border-radius:7px;border:2px solid var(--line);display:grid;place-items:center}
+.scheck svg{width:13px;height:13px;opacity:0}
+.step.done .scheck i{background:var(--accent);border-color:var(--accent)}
+.step.done .scheck svg{opacity:1}
+.sdel{flex:none;width:40px;height:40px;color:var(--muted);font-size:1.3rem}
+
 /* tab bar */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
-.tabs-in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);height:var(--tabh)}
-.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:.74rem;font-weight:600;color:var(--muted)}
+.tabs-in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);height:var(--tabh)}
+.tab{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:.74rem;font-weight:600;color:var(--muted)}
+.tab .tb{position:absolute;top:6px;left:calc(50% + 5px);min-width:18px;height:18px;padding:0 5px;border-radius:99px;background:var(--danger);color:var(--surface);font-size:.68rem;font-weight:800;display:grid;place-items:center;line-height:1}
 .tab svg{width:24px;height:24px}
 .tab[aria-current="page"]{color:var(--accent)}
 
@@ -299,6 +332,9 @@ textarea.inp{min-height:84px;resize:vertical}
     <button class="tab" data-action="tab" data-tab="today">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>Hoje
     </button>
+    <button class="tab" data-action="tab" data-tab="tasks">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 6.5 2 2 3.5-4M3.5 16.5l2 2 3.5-4M13 7h8M13 17h8"/></svg>Tarefas<span class="tb" id="tb" hidden></span>
+    </button>
     <button class="tab" data-action="tab" data-tab="stats">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Progresso
     </button>
@@ -362,6 +398,8 @@ const PHRASES = [
   "Constância ganha de intensidade.",
   "Faz o mínimo nos dias ruins. Já é vitória."
 ];
+const PRIOS = [["Nenhuma","var(--muted)"],["Baixa","#4F7CAC"],["Média","var(--gold)"],["Alta","var(--danger)"]];
+const REPEATS = [["","Não repete"],["daily","Todo dia"],["weekdays","Dias úteis"],["weekly","Toda semana"],["monthly","Todo mês"]];
 const PLANT = [[0,"Semente"],[3,"Broto"],[10,"Mudinha"],[25,"Plantinha"],[50,"Planta jovem"],[100,"Cheia de botões"],[175,"Florida"],[275,"Frondosa"],[400,"Jardim inteiro"]];
 
 /* ================= datas (horário local) ================= */
@@ -377,7 +415,7 @@ const nowHM = () => { const d = new Date(); return `${pad(d.getHours())}:${pad(d
 /* ================= estado ================= */
 function defaultState(){
   return {v:2, name:"Mariana", note:"Feito com carinho pelo Nando 💛", theme:"auto", accent:"ameixa", sound:true, onboarded:false,
-          habits:[], log:{}, skips:{}, journal:{}, seenBadges:[], updatedAt:0};
+          habits:[], log:{}, skips:{}, journal:{}, seenBadges:[], tasks:[], tasksDone:0, updatedAt:0};
 }
 const clampInt = (v,min,max,def) => { v = Math.round(Number(v)); return Number.isFinite(v) ? Math.min(max, Math.max(min, v)) : def; };
 function cleanHabit(h){
@@ -404,6 +442,24 @@ function cleanHabit(h){
   };
   if (Number.isInteger(h.tpl)) out.tpl = h.tpl;
   return out;
+}
+function cleanTask(t){
+  const due = isDateStr(t.due) ? t.due : "";
+  const steps = Array.isArray(t.steps) ? t.steps.filter(s => s && typeof s.t === "string" && s.t.trim()).slice(0,30).map(s => ({t:s.t.trim().slice(0,100), done:s.done === true})) : [];
+  return {
+    id: String(t.id).slice(0,40),
+    title: String(t.title).trim().slice(0,120),
+    notes: typeof t.notes === "string" ? t.notes.slice(0,1000) : "",
+    due,
+    time: due && typeof t.time === "string" && /^([01]\d|2[0-3]):[0-5]\d$/.test(t.time) ? t.time : "",
+    prio: clampInt(t.prio,0,3,0),
+    cat: CATS.some(c => c[0] === t.cat) ? t.cat : "",
+    repeat: due && REPEATS.some(r => r[0] === t.repeat) ? t.repeat : "",
+    steps,
+    done: t.done === true,
+    doneAt: t.done === true && isDateStr(t.doneAt) ? t.doneAt : "",
+    createdAt: isDateStr(t.createdAt) ? t.createdAt : today()
+  };
 }
 function sanitize(o){
   if (!o || typeof o !== "object" || !Array.isArray(o.habits)) return null;
@@ -447,6 +503,12 @@ function sanitize(o){
       if (mood || text.trim()) s.journal[d] = {mood, text};
     }
   }
+  if (Array.isArray(o.tasks)){
+    const seenT = new Set();
+    s.tasks = o.tasks.filter(t => t && typeof t.id === "string" && t.id && typeof t.title === "string" && t.title.trim())
+      .map(cleanTask).filter(t => !seenT.has(t.id) && seenT.add(t.id)).slice(0,2000);
+  }
+  s.tasksDone = Math.max(clampInt(o.tasksDone,0,1e7,0), s.tasks.filter(t => t.done).length);
   return s;
 }
 function loadState(){
@@ -463,7 +525,7 @@ function persistLocal(){
 }
 function save(){ state.updatedAt = Date.now(); persistLocal(); scheduleSync(); }
 
-const ui = { tab:"today", selDate: today(), followToday:true, cat:"all", form:null, pop:null, shake:null, dl:null, notified:new Set() };
+const ui = { tab:"today", selDate: today(), followToday:true, cat:"all", form:null, tfilter:"today", tform:null, pop:null, shake:null, dl:null, notified:new Set() };
 
 /* ================= sincronização opcional (conta Claude) ================= */
 const sync = { ref:null, timer:null, on:false };
@@ -613,6 +675,60 @@ function makeHabit(tp){
     days:ALL_DAYS.slice(), time:tp.time, intent:"", cat:tp.cat, timer:tp.timer||0, remind:"", goal:0, createdAt:today()});
 }
 
+/* ================= lógica de tarefas ================= */
+const taskById = id => state.tasks.find(t => t.id === id);
+const pendingTasks = () => state.tasks.filter(t => !t.done);
+const isLate = t => !t.done && !!t.due && t.due < today();
+const tasksDueNow = () => { const t = today(); return pendingTasks().filter(x => x.due && x.due <= t); };
+function addMonths(s, k){
+  const [y,m,d] = s.split("-").map(Number), last = new Date(y, m+k, 0).getDate();
+  return ymd(new Date(y, m-1+k, Math.min(d,last), 12));
+}
+function nextWd(w){ let d = addDays(today(),1); while (dow(d) !== w) d = addDays(d,1); return d; }
+/* próxima data de uma tarefa que repete: sempre depois de hoje, pra não criar uma já atrasada */
+function nextDue(x){
+  const t = today();
+  if (x.repeat === "monthly"){ let k = 1, n = addMonths(x.due,1); while (n <= t && k < 1200) n = addMonths(x.due, ++k); return n; }
+  const step = d => {
+    if (x.repeat === "weekly") return addDays(d,7);
+    let n = addDays(d,1);
+    if (x.repeat === "weekdays") while (dow(n) === 0 || dow(n) === 6) n = addDays(n,1);
+    return n;
+  };
+  let n = step(x.due);
+  for (let i = 0; n <= t && i < 4000; i++) n = step(n);
+  return n;
+}
+function sortTasks(list){
+  return list.map((t,i) => [t,i]).sort((a,b) => (a[0].due || "9999").localeCompare(b[0].due || "9999")
+    || (a[0].time || "99:99").localeCompare(b[0].time || "99:99") || b[0].prio - a[0].prio || a[1] - b[1]).map(p => p[0]);
+}
+function taskDay(d){
+  const t = today(), diff = Math.round((parseD(d) - parseD(t)) / 864e5);
+  if (diff === 0) return "hoje";
+  if (diff === 1) return "amanhã";
+  if (diff === -1) return "ontem";
+  if (diff > 1 && diff < 7) return WD_LONG[dow(d)];
+  if (diff < 0 && diff > -7) return `há ${-diff} dias`;
+  const o = {day:"numeric", month:"short"}; if (d.slice(0,4) !== t.slice(0,4)) o.year = "numeric";
+  return parseD(d).toLocaleDateString("pt-BR", o).replace(/\./g,"");
+}
+function taskGroups(filter){
+  const t = today(), tm = addDays(t,1), wk = addDays(t,7);
+  if (filter === "done"){
+    const done = state.tasks.map((x,i) => [x,i]).filter(p => p[0].done).sort((a,b) => b[0].doneAt.localeCompare(a[0].doneAt) || b[1] - a[1]).map(p => p[0]);
+    return done.length ? [{key:"done", label:"Concluídas", list:done}] : [];
+  }
+  const pend = sortTasks(pendingTasks()), g = [];
+  const add = (key, label, list) => { if (list.length) g.push({key, label, list}); };
+  const late = pend.filter(x => x.due && x.due < t), tod = pend.filter(x => x.due === t), tom = pend.filter(x => x.due === tm);
+  const week = pend.filter(x => x.due > tm && x.due <= wk), later = pend.filter(x => x.due > wk), none = pend.filter(x => !x.due);
+  if (filter === "today"){ add("late","Atrasadas",late); add("today","Hoje",tod); }
+  else if (filter === "soon"){ add("tomorrow","Amanhã",tom); add("week","Próximos 7 dias",week); add("later","Mais pra frente",later); }
+  else { add("late","Atrasadas",late); add("today","Hoje",tod); add("tomorrow","Amanhã",tom); add("week","Próximos 7 dias",week); add("later","Mais pra frente",later); add("none","Sem data",none); }
+  return g;
+}
+
 /* ================= jardim e conquistas ================= */
 function plantLevel(n){ let lv = 0; PLANT.forEach((p,i) => { if (n >= p[0]) lv = i; }); return lv; }
 function badges(){
@@ -635,7 +751,10 @@ function badges(){
     {id:"journal7", e:"📔", n:"Querido diário", d:"7 dias no diário", ok:journ >= 7, p:prog(journ,7)},
     {id:"avoid14", e:"🛡️", n:"Resistência", d:"14 dias sem deslizes", ok:avoidBest >= 14, p:prog(avoidBest,14)},
     {id:"goal", e:"🎯", n:"Desafio cumprido", d:"Completar um desafio", ok:goalHit, p:goalHit ? "" : (goalMax ? Math.round(goalMax*100) + "%" : "")},
-    {id:"variety", e:"🌈", n:"Rotina completa", d:"5 hábitos ativos", ok:live().length >= 5, p:prog(live().length,5)}
+    {id:"variety", e:"🌈", n:"Rotina completa", d:"5 hábitos ativos", ok:live().length >= 5, p:prog(live().length,5)},
+    {id:"task1", e:"✅", n:"Risquei!", d:"Concluir uma tarefa", ok:state.tasksDone >= 1, p:prog(state.tasksDone,1)},
+    {id:"task25", e:"📋", n:"Lista em dia", d:"25 tarefas concluídas", ok:state.tasksDone >= 25, p:prog(state.tasksDone,25)},
+    {id:"task100", e:"🚀", n:"Imparável", d:"100 tarefas concluídas", ok:state.tasksDone >= 100, p:prog(state.tasksDone,100)}
   ];
 }
 function markBadgesSeen(){ for (const b of badges()) if (b.ok && !state.seenBadges.includes(b.id)) state.seenBadges.push(b.id); }
@@ -741,6 +860,12 @@ function viewToday(){
   const off = live().filter(x => !x.days.includes(dow(sel)) && (sel >= x.createdAt || inWindow(sel)) && (ui.cat === "all" || x.cat === ui.cat));
   if (off.length && shown.length) h += `<p class="skipped">Fora da agenda ${sel === t ? "hoje" : "nesse dia"}: ${off.map(x => esc(x.emoji + " " + x.name)).join(", ")}</p>`;
 
+  const dueNow = sel === t ? sortTasks(tasksDueNow()) : [];
+  if (dueNow.length){
+    h += `<section class="card" style="margin-top:22px"><h2>Tarefas de hoje</h2><div class="list">${dueNow.slice(0,5).map(x => taskCard(x)).join("")}</div>
+      <button class="btn block" style="margin-top:10px" data-action="tab" data-tab="tasks" data-f="today">${dueNow.length > 5 ? `Ver todas (${dueNow.length})` : "Abrir tarefas"}</button></section>`;
+  }
+
   const j = state.journal[sel] || {mood:0, text:""};
   h += `<section class="card" style="margin-top:22px"><h2>${sel === t ? "Como está seu dia?" : "Como foi " + esc(relDay(sel)) + "?"}</h2>
     <div class="moods" role="group" aria-label="Humor">${MOODS.map((m,i) => `<button data-action="mood" data-v="${i+1}" aria-pressed="${j.mood === i+1}" aria-label="${m[1]}"><span>${m[0]}</span><small>${m[1]}</small></button>`).join("")}</div>
@@ -792,6 +917,61 @@ function habitCard(x, d){
   </article>`;
 }
 
+/* ================= tela Tarefas ================= */
+const TICK = `<svg viewBox="0 0 24 24" fill="none" stroke="var(--surface)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>`;
+function taskCard(x){
+  const t = today(), late = isLate(x), chips = [];
+  if (x.done) chips.push(`<span class="chip">feita ${esc(taskDay(x.doneAt || t))}</span>`);
+  else if (late) chips.push(`<span class="chip bad">atrasada · ${esc(taskDay(x.due))}</span>`);
+  else if (x.due && x.due !== t) chips.push(`<span class="chip">📅 ${esc(taskDay(x.due))}</span>`);
+  if (x.time && !x.done) chips.push(`<span class="chip ${x.due === t && nowHM() >= x.time ? "warn" : ""}">⏰ ${x.time}</span>`);
+  if (x.prio >= 2 && !x.done) chips.push(`<span class="chip ${x.prio === 3 ? "bad" : "warn"}">${x.prio === 3 ? "❗ alta" : "média"}</span>`);
+  if (x.steps.length) chips.push(`<span class="chip">☑️ ${x.steps.filter(s => s.done).length}/${x.steps.length}</span>`);
+  if (x.repeat) chips.push(`<span class="chip">🔁 ${REPEATS.find(r => r[0] === x.repeat)[1].toLowerCase()}</span>`);
+  if (x.cat) chips.push(`<span class="chip">${esc(catName(x.cat))}</span>`);
+  if (x.notes.trim()) chips.push(`<span class="chip">📝</span>`);
+  const pr = x.prio ? `, prioridade ${PRIOS[x.prio][0].toLowerCase()}` : "";
+  return `<article class="task ${x.done ? "done" : ""}" style="--c:${PRIOS[x.prio][1]}">
+    <button class="tcheck ${ui.pop === x.id ? "pop" : ""}" data-action="t-tap" data-id="${x.id}" aria-pressed="${x.done}" aria-label="${esc((x.done ? "Reabrir " : "Concluir ") + x.title + pr)}"><i>${TICK}</i></button>
+    <button class="task-main" data-action="t-open" data-id="${x.id}" aria-label="Abrir ${esc(x.title)}"><span class="nm">${esc(x.title)}</span>${chips.length ? `<span class="meta">${chips.join("")}</span>` : ""}</button>
+  </article>`;
+}
+function viewTasks(){
+  const f = ui.tfilter, t = today(), tm = addDays(t,1), pend = pendingTasks();
+  const n = {today: tasksDueNow().length, soon: pend.filter(x => x.due >= tm).length, all: pend.length, done: state.tasks.length - pend.length};
+  let h = `<h1 class="page-title">Tarefas</h1>`;
+  if (!storageOk) h += `<div class="back-today" style="background:color-mix(in srgb,var(--danger) 16%,transparent)"><span>⚠️ Aqui os dados não estão sendo salvos. Abra pelo ícone instalado ou pelo link no Safari/Chrome (fora de aba anônima).</span></div>`;
+  h += `<div class="tq"><input class="inp" id="tq" maxlength="120" placeholder="${f === "today" ? "Nova tarefa pra hoje…" : f === "soon" ? "Nova tarefa pra amanhã…" : "Nova tarefa…"}" autocomplete="off" enterkeyhint="done" aria-label="Nova tarefa">
+    <button class="btn primary" data-action="tq-add" aria-label="Adicionar tarefa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button></div>
+  <div class="seg tseg" role="group" aria-label="Filtrar tarefas">${[["today","Hoje"],["soon","Em breve"],["all","Todas"],["done","Feitas"]].map(([k,l]) => `<button data-action="tfilter" data-v="${k}" aria-pressed="${f === k}">${l}${n[k] ? ` <small>${n[k]}</small>` : ""}</button>`).join("")}</div>`;
+  const groups = taskGroups(f);
+  if (!groups.length){
+    const [title, text] = f === "today" ? (n.all ? ["Nada pra hoje 🎉", `Você tem ${n.all} ${n.all === 1 ? "tarefa" : "tarefas"} pra outros dias.`] : ["Nenhuma tarefa", "Escreva ali em cima e toque em +. Termine com “amanhã” pra já agendar."])
+      : f === "soon" ? ["Nada agendado", "Tarefas com data a partir de amanhã aparecem aqui."]
+      : f === "all" ? ["Lista vazia", "Escreva ali em cima e toque em +, ou use o botão pra criar com data, passos e lembrete."]
+      : ["Nenhuma concluída ainda", "O que você riscar aparece aqui."];
+    h += `<div class="empty"><h2>${title}</h2><p style="margin:0">${esc(text)}</p>${f === "today" && n.all ? `<button class="btn block" style="margin-top:14px" data-action="tfilter" data-v="all">Ver todas</button>` : ""}</div>`;
+  }
+  for (const g of groups){
+    const act = g.key === "late" ? `<button data-action="late-today">Mover pra hoje</button>` : g.key === "done" ? `<button data-action="clear-done">Limpar</button>` : "";
+    h += `<section class="group"><div class="ghead"><h2>${g.label}</h2>${act}</div><div class="list">${g.list.map(taskCard).join("")}</div></section>`;
+  }
+  return h;
+}
+function taskStatsCard(){
+  const t = today(), days = [];
+  for (let i = 6; i >= 0; i--){ const d = addDays(t,-i); days.push({d, n: state.tasks.filter(x => x.done && x.doneAt === d).length}); }
+  const week = days.reduce((a,b) => a + b.n, 0), max = Math.max(1, ...days.map(x => x.n));
+  return `<div class="card"><h2>Tarefas</h2>
+    <div class="stats4" style="margin:0 0 14px">
+      <div><b>${pendingTasks().length}</b><span>pendentes</span></div>
+      <div><b>${state.tasks.filter(isLate).length}</b><span>atrasadas</span></div>
+      <div><b>${week}</b><span>concluídas em 7 dias</span></div>
+      <div><b>${state.tasksDone}</b><span>concluídas no total</span></div>
+    </div>
+    <div class="bars">${days.map(x => `<div class="b"><b>${x.n || ""}</b><i style="height:${x.n ? Math.max(3, Math.round(x.n/max*90)) : 3}px;${x.n ? "" : "opacity:.25"}"></i><small>${x.d === t ? "hoje" : WD_ABBR[dow(x.d)]}</small></div>`).join("")}</div></div>`;
+}
+
 /* ================= tela Progresso ================= */
 function heatmap(levelFn, color){
   const t = today(), weeks = 15;
@@ -832,8 +1012,9 @@ function plantSVG(lv){
 }
 function viewStats(){
   let h = `<h1 class="page-title">Progresso</h1>`;
+  const hasTasks = state.tasks.length > 0 || state.tasksDone > 0;
   if (!state.habits.length){
-    return h + `<div class="card"><h2>Nada por aqui ainda</h2><p class="hint" style="margin:0">Crie um hábito na aba Hoje e os gráficos aparecem aqui.</p></div>`;
+    return h + `<div class="card"><h2>Nada por aqui ainda</h2><p class="hint" style="margin:0">Crie um hábito na aba Hoje e os gráficos aparecem aqui.</p></div>` + (hasTasks ? taskStatsCard() : "");
   }
   const checks = totalCheckins(), lv = plantLevel(checks), next = PLANT[lv+1];
   h += `<div class="card garden">${plantSVG(lv)}<div class="gtxt"><p>Seu jardim, nível ${lv+1} de ${PLANT.length}</p><h3>${PLANT[lv][1]}</h3>
@@ -896,6 +1077,7 @@ function viewStats(){
     }
     h += `</div>`;
   }
+  if (hasTasks) h += taskStatsCard();
   const bs = badges(), got = bs.filter(b => b.ok).length;
   h += `<div class="card"><h2>Conquistas</h2><p class="hint">${got} de ${bs.length} desbloqueadas.</p><div class="badges">${bs.map(b => `<div class="badge ${b.ok ? "" : "locked"}"><div class="be">${b.e}</div><b>${b.n}</b><small>${b.ok ? b.d : (b.p ? b.d + " (" + b.p + ")" : b.d)}</small></div>`).join("")}</div></div>`;
   const arch = state.habits.filter(x => x.archived);
@@ -932,7 +1114,7 @@ function viewSettings(){
   </div>
   <div class="card">
     <h2>Recomeçar</h2>
-    <p class="hint">Apaga todos os hábitos, o histórico e o diário. Seu nome e o recadinho ficam.</p>
+    <p class="hint">Apaga todos os hábitos, o histórico e o diário. Suas tarefas, seu nome e o recadinho ficam.</p>
     <button class="btn danger block" data-action="wipe">Apagar hábitos e histórico</button>
   </div>`;
 }
@@ -1031,6 +1213,117 @@ function saveForm(){
   const nb = checkBadges(); if (nb){ toast(`🏅 Nova conquista: ${nb.n}`); confetti(); }
 }
 
+/* ================= formulário de tarefa ================= */
+function newTaskForm(x){
+  if (x) return {id:x.id, title:x.title, notes:x.notes, due:x.due, time:x.time, prio:x.prio, cat:x.cat, repeat:x.repeat, steps:x.steps.map(s => ({...s})), stepDraft:"", err:""};
+  const due = ui.tfilter === "today" ? today() : ui.tfilter === "soon" ? addDays(today(),1) : "";
+  return {id:null, title:"", notes:"", due, time:"", prio:0, cat:"", repeat:"", steps:[], stepDraft:"", err:""};
+}
+function readTaskInputs(){
+  const f = ui.tform; if (!f) return;
+  const g = id => document.getElementById(id);
+  if (g("t-title")) f.title = g("t-title").value;
+  if (g("t-notes")) f.notes = g("t-notes").value;
+  if (g("t-due")) f.due = isDateStr(g("t-due").value) ? g("t-due").value : "";
+  if (g("t-time")) f.time = g("t-time").value;
+  if (g("t-step-new")) f.stepDraft = g("t-step-new").value;
+  if (!f.due){ f.time = ""; f.repeat = ""; }
+}
+function taskGcalUrl(x){
+  const f = dt => `${dt.getFullYear()}${pad(dt.getMonth()+1)}${pad(dt.getDate())}T${pad(dt.getHours())}${pad(dt.getMinutes())}00`;
+  let dates;
+  if (x.time){ const [H,M] = x.time.split(":").map(Number), s = parseD(x.due); s.setHours(H, M, 0, 0); dates = f(s) + "/" + f(new Date(s.getTime() + 30*60000)); }
+  else dates = x.due.replace(/-/g,"") + "/" + addDays(x.due,1).replace(/-/g,"");
+  const rr = {daily:"FREQ=DAILY", weekdays:"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR", weekly:"FREQ=WEEKLY", monthly:"FREQ=MONTHLY"}[x.repeat];
+  let tz = ""; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch(err){}
+  return "https://calendar.google.com/calendar/render?action=TEMPLATE&text=" + encodeURIComponent(x.title) + "&dates=" + dates +
+    (rr ? "&recur=" + encodeURIComponent("RRULE:" + rr) : "") + (tz && x.time ? "&ctz=" + encodeURIComponent(tz) : "") +
+    "&details=" + encodeURIComponent(x.notes || "Tarefa do app de hábitos");
+}
+function taskFormHTML(){
+  const f = ui.tform, x = f.id ? taskById(f.id) : null, t = today();
+  const sat = dow(t) === 6 ? t : nextWd(6);
+  const quick = [[t,"Hoje"],[addDays(t,1),"Amanhã"],[sat,"Sábado"],[nextWd(1),"Próx. segunda"],["","Sem data"]];
+  let acts = `<button class="btn primary block" data-action="t-save">${x ? "Salvar alterações" : "Criar tarefa"}</button>`;
+  if (x){
+    acts += `<button class="btn block" data-action="t-done-toggle" data-id="${x.id}">${x.done ? "Reabrir tarefa" : "Marcar como feita"}</button>`;
+    if (!x.done && x.due && x.due <= t) acts += `<button class="btn block" data-action="t-postpone" data-id="${x.id}">Adiar pra amanhã</button>`;
+    if (x.due) acts += `<a class="btn block" href="${esc(taskGcalUrl(x))}" target="_blank" rel="noopener">Adicionar ao Google Agenda</a>`;
+    acts += `<button class="btn block" data-action="t-dup" data-id="${x.id}">Duplicar</button>`;
+    acts += `<button class="btn danger block" data-action="t-del" data-id="${x.id}">Apagar tarefa</button>`;
+  }
+  acts += `<button class="btn block" data-action="close">Cancelar</button>`;
+  return `<h2 class="st" id="sheet-title">${x ? "Tarefa" : "Nova tarefa"}</h2>
+  ${x && x.done ? `<p class="sub">Concluída ${esc(taskDay(x.doneAt || t))}.</p>` : x && isLate(x) ? `<p class="sub" style="color:var(--danger)">Atrasada desde ${esc(fmtLong(x.due))}.</p>` : ""}
+  <label class="f" for="t-title">O que precisa fazer?</label>
+  <input class="inp" id="t-title" maxlength="120" placeholder="Ex.: Entregar trabalho de história" value="${esc(f.title)}" autocomplete="off" enterkeyhint="done">
+  ${f.err ? `<p class="err" role="alert">${esc(f.err)}</p>` : ""}
+  <span class="f">Quando</span>
+  <div class="pills" role="group" aria-label="Data rápida">${quick.map(([d,l]) => `<button data-action="t-date" data-v="${d}" aria-pressed="${f.due === d}">${l}</button>`).join("")}</div>
+  <div class="timein" style="margin-top:8px"><input class="inp" type="date" id="t-due" value="${esc(f.due)}" aria-label="Data" style="width:auto;flex:1;min-width:0">${f.due ? `<span class="fhint" style="margin:0;flex:none">${esc(taskDay(f.due))}</span>` : ""}</div>
+  ${f.due ? `<label class="f" for="t-time">Horário (opcional)</label>
+  <div class="timein"><input class="inp" type="time" id="t-time" value="${esc(f.time)}">${f.time ? `<button class="mini" data-action="t-notime">Tirar horário</button>` : ""}</div>
+  <p class="fhint">Com o app aberto, avisa quando chegar a hora.</p>` : ""}
+  <span class="f">Repetir</span>
+  <div class="pills" role="group" aria-label="Repetir">${REPEATS.map(([k,l]) => `<button data-action="t-repeat" data-v="${k}" aria-pressed="${f.repeat === k}">${l}</button>`).join("")}</div>
+  ${f.repeat ? `<p class="fhint">Quando você concluir, a próxima já aparece na lista.</p>` : ""}
+  <span class="f">Prioridade</span>
+  <div class="seg" role="group" aria-label="Prioridade">${PRIOS.map(([l],i) => `<button data-action="t-prio" data-v="${i}" aria-pressed="${f.prio === i}">${l}</button>`).join("")}</div>
+  <span class="f">Categoria</span>
+  <div class="pills" role="group" aria-label="Categoria"><button data-action="t-cat" data-v="" aria-pressed="${!f.cat}">Nenhuma</button>${CATS.map(([k,l]) => `<button data-action="t-cat" data-v="${k}" aria-pressed="${f.cat === k}">${l}</button>`).join("")}</div>
+  <span class="f">Passos${f.steps.length ? ` (${f.steps.filter(s => s.done).length}/${f.steps.length})` : ""}</span>
+  ${f.steps.length ? `<div class="steps">${f.steps.map((s,i) => `<div class="step ${s.done ? "done" : ""}"><button class="scheck" data-action="t-step-toggle" data-i="${i}" aria-pressed="${s.done}" aria-label="${esc((s.done ? "Desmarcar " : "Marcar ") + s.t)}"><i>${TICK.replace("var(--surface)","var(--accent-ink)")}</i></button><span class="nm">${esc(s.t)}</span><button class="sdel" data-action="t-step-del" data-i="${i}" aria-label="${esc("Remover " + s.t)}">×</button></div>`).join("")}</div>` : ""}
+  ${f.steps.length < 30 ? `<div class="timein"><input class="inp" id="t-step-new" maxlength="100" placeholder="Adicionar passo…" value="${esc(f.stepDraft)}" autocomplete="off" enterkeyhint="enter" style="width:auto;flex:1;min-width:0"><button class="mini" data-action="t-step-add">Adicionar</button></div>` : ""}
+  <label class="f" for="t-notes">Notas</label>
+  <textarea class="inp" id="t-notes" maxlength="1000" placeholder="Links, detalhes, o que lembrar…">${esc(f.notes)}</textarea>
+  <div class="sheet-actions">${acts}</div>`;
+}
+function rerenderTaskForm(){ const s = $("#sheet .sheet"), y = s.scrollTop; openSheet(taskFormHTML()); s.scrollTop = y; }
+function saveTaskForm(){
+  readTaskInputs();
+  const f = ui.tform, title = f.title.trim();
+  if (!title){ f.err = "Dá um nome pra tarefa."; rerenderTaskForm(); document.getElementById("t-title").focus(); return; }
+  if (f.stepDraft.trim() && f.steps.length < 30) f.steps.push({t:f.stepDraft.trim(), done:false});
+  const old = f.id ? taskById(f.id) : null;
+  const x = cleanTask({...f, title, id:old ? old.id : uid(), done:old ? old.done : false, doneAt:old ? old.doneAt : "", createdAt:old ? old.createdAt : today()});
+  if (old) Object.assign(old, x); else state.tasks.push(x);
+  save(); closeSheet(); render();
+  toast(old ? "Tarefa salva" : x.due ? `Tarefa criada pra ${taskDay(x.due)}` : "Tarefa criada");
+}
+function celebrateBadge(delay){ const nb = checkBadges(); if (nb){ setTimeout(() => toast(`🏅 Nova conquista: ${nb.n}`), delay); confetti(); } }
+function tasksSnapshot(){
+  const snap = JSON.stringify({tasks:state.tasks, n:state.tasksDone});
+  return () => { const o = JSON.parse(snap); state.tasks = o.tasks.map(cleanTask); state.tasksDone = o.n; save(); render(); };
+}
+function toggleTask(x){
+  const undo = tasksSnapshot(), t = today();
+  if (x.done){ x.done = false; x.doneAt = ""; state.tasksDone = Math.max(0, state.tasksDone - 1); save(); render(); return; }
+  const hadDue = tasksDueNow().length;
+  x.done = true; x.doneAt = t; state.tasksDone++;
+  let msg = "Tarefa concluída";
+  if (x.repeat && x.due){
+    const nx = cleanTask({...x, id:uid(), due:nextDue(x), done:false, doneAt:"", steps:x.steps.map(s => ({t:s.t, done:false})), createdAt:t});
+    state.tasks.push(nx); x.repeat = "";
+    msg = `Feita! Próxima: ${taskDay(nx.due)}`;
+  }
+  ui.pop = x.id; vibrate(15); sfx("done");
+  save(); render();
+  if (hadDue && !tasksDueNow().length && x.due && x.due <= t){ confetti(); sfx("full"); toast("Tudo feito por hoje! 🎉", undo); celebrateBadge(1400); }
+  else { toast(msg, undo); celebrateBadge(1400); }
+}
+function quickAdd(){
+  const el = $("#tq"); if (!el) return;
+  let v = el.value.trim(); if (!v){ el.focus(); return; }
+  let due = ui.tfilter === "today" ? today() : ui.tfilter === "soon" ? addDays(today(),1) : "";
+  const m = v.match(/\s+(hoje|amanh[ãa])$/i);
+  if (m && v.length > m[0].length){ due = /^h/i.test(m[1]) ? today() : addDays(today(),1); v = v.slice(0, -m[0].length).trim(); }
+  state.tasks.push(cleanTask({id:uid(), title:v, due, createdAt:today()}));
+  if (ui.tfilter === "done") ui.tfilter = "all";
+  save(); render(); vibrate(10);
+  const n = $("#tq"); if (n) n.focus();
+  toast(due ? `Adicionada pra ${taskDay(due)}` : "Adicionada (sem data)");
+}
+
 /* ================= sheets ================= */
 let lastFocus = null;
 function openSheet(html){
@@ -1045,7 +1338,7 @@ function openSheet(html){
 function closeSheet(){
   stopTimer();
   const w = $("#sheet"); if (w.hidden) return;
-  w.hidden = true; ui.form = null; document.body.style.overflow = "";
+  w.hidden = true; ui.form = null; ui.tform = null; document.body.style.overflow = "";
   $("#sheet-body").innerHTML = "";
   if (lastFocus && document.contains(lastFocus)) try { lastFocus.focus({preventScroll:true}); } catch(e){}
 }
@@ -1179,9 +1472,13 @@ function applyTheme(){
 function render(){
   applyTheme();
   const main = $("#main");
-  main.innerHTML = ui.tab === "today" ? viewToday() : ui.tab === "stats" ? viewStats() : viewSettings();
+  main.innerHTML = ui.tab === "today" ? viewToday() : ui.tab === "tasks" ? viewTasks() : ui.tab === "stats" ? viewStats() : viewSettings();
   document.querySelectorAll(".tab").forEach(b => b.setAttribute("aria-current", b.dataset.tab === ui.tab ? "page" : "false"));
-  $("#fab").hidden = !(ui.tab === "today" && state.onboarded && live().length > 0);
+  const fab = $("#fab");
+  fab.hidden = !(ui.tab === "tasks" || (ui.tab === "today" && state.onboarded && live().length > 0));
+  fab.setAttribute("aria-label", ui.tab === "tasks" ? "Nova tarefa" : "Novo hábito");
+  const due = tasksDueNow().length, tb = $("#tb");
+  tb.hidden = !due; tb.textContent = due > 99 ? "99+" : due;
   ui.pop = null; ui.shake = null;
 }
 function refreshDetail(id){ const x = habitById(id); if (x && !$("#sheet").hidden) openSheet(detailHTML(x)); }
@@ -1242,12 +1539,13 @@ function buildCSV(){
     }
   }
   for (const [d, j] of Object.entries(state.journal).sort()) rows.push([d, WD_LONG[dow(d)], "(diário)", "", "", j.mood ? MOODS[j.mood-1][1] : "", "", j.text.replace(/\s+/g," ")]);
+  for (const x of sortTasks(state.tasks)) rows.push([x.due, x.due ? WD_LONG[dow(x.due)] : "", x.title, x.cat ? catName(x.cat) : "", "tarefa", x.time, PRIOS[x.prio][0], x.done ? "feita em " + x.doneAt : "pendente"]);
   return "\uFEFF" + rows.map(r => r.map(q).join(";")).join("\r\n");
 }
 
 /* ================= ações ================= */
 const actions = {
-  tab(el){ ui.tab = el.dataset.tab; if (ui.tab === "today" && ui.followToday) ui.selDate = today(); render(); window.scrollTo(0,0); },
+  tab(el){ ui.tab = el.dataset.tab; if (el.dataset.f) ui.tfilter = el.dataset.f; if (ui.tab === "today" && ui.followToday) ui.selDate = today(); render(); window.scrollTo(0,0); },
   day(el){ ui.selDate = el.dataset.date; ui.followToday = ui.selDate === today(); render(); },
   "go-today"(){ ui.selDate = today(); ui.followToday = true; render(); },
   cat(el){ ui.cat = el.dataset.v; render(); },
@@ -1275,7 +1573,39 @@ const actions = {
   },
   "t-reset"(){ if (!tmr) return; pauseTimer(); tmr.remaining = tmr.total; tmr.finished = false; paintTimer(); },
   "t-done"(){ if (!tmr) return; const x = habitById(tmr.id), d = tmr.day; closeSheet(); if (x && !isDone(x,d)) bump(x, d, x.target - getCount(x,d)); },
-  add(){ ui.form = newForm(null); openSheet(formHTML()); },
+  add(){
+    if (ui.tab === "tasks"){ ui.tform = newTaskForm(null); openSheet(taskFormHTML()); document.getElementById("t-title").focus(); return; }
+    ui.form = newForm(null); openSheet(formHTML());
+  },
+  tfilter(el){ ui.tfilter = el.dataset.v; render(); },
+  "tq-add"(){ quickAdd(); },
+  "t-tap"(el){ const x = taskById(el.dataset.id); if (x) toggleTask(x); },
+  "t-open"(el){ const x = taskById(el.dataset.id); if (!x) return; ui.tform = newTaskForm(x); openSheet(taskFormHTML()); },
+  "t-date"(el){ readTaskInputs(); const f = ui.tform; f.due = el.dataset.v; if (!f.due){ f.time = ""; f.repeat = ""; } rerenderTaskForm(); },
+  "t-notime"(){ readTaskInputs(); ui.tform.time = ""; rerenderTaskForm(); },
+  "t-repeat"(el){ readTaskInputs(); const f = ui.tform; f.repeat = el.dataset.v; if (f.repeat && !f.due) f.due = today(); rerenderTaskForm(); },
+  "t-prio"(el){ readTaskInputs(); ui.tform.prio = +el.dataset.v; rerenderTaskForm(); },
+  "t-cat"(el){ readTaskInputs(); ui.tform.cat = el.dataset.v; rerenderTaskForm(); },
+  "t-step-add"(){
+    readTaskInputs(); const f = ui.tform, s = f.stepDraft.trim();
+    if (s && f.steps.length < 30) f.steps.push({t:s.slice(0,100), done:false});
+    f.stepDraft = ""; rerenderTaskForm();
+    const inp = document.getElementById("t-step-new"); if (inp) inp.focus();
+  },
+  "t-step-toggle"(el){ readTaskInputs(); const s = ui.tform.steps[+el.dataset.i]; if (s){ s.done = !s.done; vibrate(10); } rerenderTaskForm(); },
+  "t-step-del"(el){ readTaskInputs(); ui.tform.steps.splice(+el.dataset.i, 1); rerenderTaskForm(); },
+  "t-save"(){ saveTaskForm(); },
+  "t-done-toggle"(el){ const x = taskById(el.dataset.id); if (!x) return; closeSheet(); toggleTask(x); },
+  "t-postpone"(el){ const x = taskById(el.dataset.id); if (!x) return; const undo = tasksSnapshot(); x.due = addDays(today(),1); save(); closeSheet(); render(); toast("Adiada pra amanhã", undo); },
+  "t-dup"(el){
+    const x = taskById(el.dataset.id); if (!x) return;
+    const c = cleanTask({...x, id:uid(), done:false, doneAt:"", steps:x.steps.map(s => ({t:s.t, done:false})), createdAt:today()});
+    state.tasks.splice(state.tasks.indexOf(x) + 1, 0, c);
+    save(); ui.tform = newTaskForm(c); openSheet(taskFormHTML()); render(); toast("Cópia criada. Edite o que quiser.");
+  },
+  "t-del"(el){ const x = taskById(el.dataset.id); if (!x) return; const undo = tasksSnapshot(); state.tasks = state.tasks.filter(t => t !== x); save(); closeSheet(); render(); toast("Tarefa apagada", undo); },
+  "late-today"(){ const undo = tasksSnapshot(), t = today(), late = state.tasks.filter(isLate); late.forEach(x => x.due = t); save(); render(); toast(`${late.length} ${late.length === 1 ? "tarefa movida" : "tarefas movidas"} pra hoje`, undo); },
+  "clear-done"(){ const undo = tasksSnapshot(), n = state.tasks.filter(x => x.done).length; state.tasks = pendingTasks(); save(); render(); toast(`${n} ${n === 1 ? "concluída removida" : "concluídas removidas"}`, undo); },
   edit(el){ const x = habitById(el.dataset.id); if (!x) return; ui.form = newForm(x); openSheet(formHTML()); $("#sheet .sheet").scrollTop = 0; },
   template(el){
     const i = +el.dataset.i, tp = TEMPLATES[i]; if (!tp) return;
@@ -1388,6 +1718,9 @@ document.addEventListener("click", e => {
 document.addEventListener("keydown", e => {
   if (e.key === "Escape" && !$("#sheet").hidden) closeSheet();
   if (e.key === "Enter" && e.target && e.target.id === "f-name"){ e.preventDefault(); saveForm(); }
+  if (e.key === "Enter" && e.target && e.target.id === "tq"){ e.preventDefault(); quickAdd(); }
+  if (e.key === "Enter" && e.target && e.target.id === "t-title"){ e.preventDefault(); saveTaskForm(); }
+  if (e.key === "Enter" && e.target && e.target.id === "t-step-new"){ e.preventDefault(); actions["t-step-add"](); }
 });
 document.addEventListener("input", e => {
   const id = e.target && e.target.id;
@@ -1396,6 +1729,7 @@ document.addEventListener("input", e => {
   else if (id === "f-emoji" && ui.form){ const v = e.target.value.trim(); if (v) ui.form.emoji = v; document.querySelectorAll('[data-action="f-emoji"]').forEach(b => b.setAttribute("aria-pressed","false")); }
 });
 document.addEventListener("change", e => {
+  if (e.target && e.target.id === "t-due" && ui.tform){ readTaskInputs(); rerenderTaskForm(); return; }
   if (e.target && e.target.id === "bk-file" && e.target.files && e.target.files[0]){
     const r = new FileReader();
     r.onload = () => { const ta = document.getElementById("bk-in"); if (ta){ ta.value = String(r.result || ""); } };
@@ -1406,7 +1740,11 @@ if (window.matchMedia){ const mq = matchMedia("(prefers-color-scheme: dark)"); c
 
 /* virada do dia e lembretes com o app aberto */
 let lastDay = today();
-function primeReminders(){ const t = today(), n = nowHM(); for (const x of live()) if (x.remind && x.remind <= n) ui.notified.add(x.id + t); }
+function primeReminders(){
+  const t = today(), n = nowHM();
+  for (const x of live()) if (x.remind && x.remind <= n) ui.notified.add(x.id + t);
+  for (const x of state.tasks) if (x.due === t && x.time && x.time <= n) ui.notified.add("t" + x.id + t);
+}
 function tickClock(){
   const t = today();
   if (t !== lastDay){ lastDay = t; ui.notified.clear(); primeReminders(); if (ui.followToday) ui.selDate = t; if ($("#sheet").hidden) render(); return; }
@@ -1416,7 +1754,14 @@ function tickClock(){
     ui.notified.add(x.id + t);
     if (counts(x,t) && !isDone(x,t)) fired = x;
   }
-  if (fired){ toast(`⏰ Hora de: ${fired.emoji} ${fired.name}`); vibrate([100,60,100]); sfx("done"); if ($("#sheet").hidden && ui.tab === "today") render(); }
+  let firedT = null;
+  for (const x of pendingTasks()){
+    if (x.due !== t || !x.time || x.time > n || ui.notified.has("t" + x.id + t)) continue;
+    ui.notified.add("t" + x.id + t); firedT = x;
+  }
+  if (fired){ toast(`⏰ Hora de: ${fired.emoji} ${fired.name}`); vibrate([100,60,100]); sfx("done"); }
+  else if (firedT){ toast(`⏰ Tarefa: ${firedT.title}`); vibrate([100,60,100]); sfx("done"); }
+  if ((fired || firedT) && $("#sheet").hidden && ui.tab !== "settings") render();
 }
 document.addEventListener("visibilitychange", () => { if (!document.hidden){ tickClock(); if (tmr) tickTimer(); } });
 setInterval(tickClock, 20000);

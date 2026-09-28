@@ -1,6 +1,6 @@
 // Service worker: faz o app abrir rápido e funcionar sem internet.
 // Sempre que publicar uma mudança, aumente o número da versão abaixo.
-const VERSION = "habitos-v2";
+const VERSION = "habitos-v3";
 const CORE = [
   "./",
   "./index.html",
