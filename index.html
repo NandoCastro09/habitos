@@ -454,7 +454,13 @@ function loadState(){
   return defaultState();
 }
 let state = loadState();
-function persistLocal(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){} }
+let storageOk = true;
+function persistLocal(){
+  try {
+    localStorage.setItem(KEY, JSON.stringify(state));
+    storageOk = localStorage.getItem(KEY) !== null;
+  } catch(e){ storageOk = false; }
+}
 function save(){ state.updatedAt = Date.now(); persistLocal(); scheduleSync(); }
 
 const ui = { tab:"today", selDate: today(), followToday:true, cat:"all", form:null, pop:null, shake:null, dl:null, notified:new Set() };
@@ -685,6 +691,7 @@ function viewToday(){
       <span class="ring-num"><b>${p.done}</b><small>de ${p.total}</small></span></div>` : ""}
   </section>`;
   const noteHTML = state.note.trim() ? `<p class="note">${esc(state.note)}</p>` : "";
+  if (!storageOk) h += `<div class="back-today" style="background:color-mix(in srgb,var(--danger) 16%,transparent)"><span>⚠️ Aqui os dados não estão sendo salvos. Abra pelo ícone instalado ou pelo link no Safari/Chrome (fora de aba anônima).</span></div>`;
 
   if (!state.onboarded){
     const n = state.habits.length;
@@ -1419,6 +1426,7 @@ if (!IN_CLAUDE && "serviceWorker" in navigator && location.protocol.startsWith("
   window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
 }
 if (!IN_CLAUDE && navigator.storage && navigator.storage.persist){ navigator.storage.persist().catch(() => {}); }
+persistLocal();
 markBadgesSeen();
 primeReminders();
 render();
