@@ -1,71 +1,64 @@
 # Hábitos 🌿
 
-App de hábitos (PWA): instala no celular, abre em tela cheia e funciona sem internet.
-Os dados ficam salvos no próprio celular.
+Fiz esse app pra Mariana acompanhar os hábitos dela. É um app web que dá pra
+instalar no celular e usar como se fosse um app normal: abre em tela cheia,
+tem ícone próprio e funciona até sem internet.
 
-## Estrutura
+Link: https://nandocastro09.github.io/habitos/
+
+## O que tem nele
+
+- Hábitos por dia da semana, com meta (tipo 8 copos de água) e horário
+- Hábitos pra evitar (ex: não roer as unhas), que contam como feitos até você marcar um deslize
+- Sequências, desafios de 21/30/66 dias e conquistas
+- Timer pra hábitos com tempo (meditar, estudar...)
+- Diário com humor do dia
+- Gráficos de progresso e uma plantinha que vai crescendo conforme você usa
+- Tema claro/escuro e algumas cores pra escolher
+
+## Como instalar no celular
+
+No iPhone, abre o link no Safari, toca no botão de compartilhar e depois em
+"Adicionar à Tela de Início".
+
+No Android, abre no Chrome e toca em "Instalar app" (se não aparecer, tá no menu ⋮).
+
+Depois é só usar pelo ícone. Os dados ficam salvos no próprio celular, então
+não precisa de conta nem login. Mas de vez em quando vale fazer um backup em
+Ajustes, porque se apagar o app ou limpar os dados do navegador, perde tudo.
+
+## Arquivos
 
 ```
-habitos-pwa/
-├── index.html             # o app inteiro (HTML + CSS + JS)
-├── manifest.webmanifest   # nome, ícone e modo tela cheia
-├── sw.js                  # service worker (offline + atualizações)
-└── icons/                 # ícones do app
+index.html            o app inteiro (HTML, CSS e JS num arquivo só)
+manifest.webmanifest  nome, ícone e configuração pra instalar
+sw.js                 service worker, é o que faz funcionar offline
+icons/                ícones
 ```
 
-## Testar no computador (VS Code)
+## Rodando localmente
 
-1. Abra a pasta `habitos-pwa` no VS Code.
-2. Instale a extensão **Live Server** (Ritwick Dey).
-3. Clique com o botão direito em `index.html` → **Open with Live Server**.
+Abri no VS Code com a extensão Live Server (botão direito no `index.html` →
+Open with Live Server). Abrir o arquivo direto também funciona, só que aí o
+modo offline não liga.
 
-> Abrir o `index.html` com dois cliques também funciona, mas o modo offline
-> só liga quando o app roda por `http://` (Live Server ou GitHub Pages).
+## Atualizando
 
-## Publicar no GitHub Pages
-
-No terminal do VS Code, dentro da pasta:
+Sempre que mexer no código, lembrar de trocar a versão no começo do `sw.js`
+(`habitos-v2` → `habitos-v3` e assim vai). Se não trocar, o celular continua
+usando a versão antiga que ficou salva.
 
 ```bash
-git init
 git add .
-git commit -m "App de hábitos"
-git branch -M main
-git remote add origin https://github.com/SEU-USUARIO/habitos.git
-git push -u origin main
+git commit -m "o que mudou"
+git push
 ```
 
-(Crie antes um repositório **público** vazio chamado `habitos` no GitHub, sem README.)
+O GitHub Pages atualiza sozinho em 1 ou 2 minutos, e o app pega a versão nova
+na próxima vez que for aberto com internet.
 
-Depois, no GitHub: **Settings → Pages → Build and deployment**
-- Source: **Deploy from a branch**
-- Branch: **main** / pasta **/ (root)** → **Save**
+## Limitações
 
-Em 1–2 minutos o app fica em: `https://SEU-USUARIO.github.io/habitos/`
-
-## Instalar no celular
-
-- **iPhone:** abra o link no **Safari** → botão Compartilhar → **Adicionar à Tela de Início**.
-- **Android:** abra no **Chrome** → vai aparecer **Instalar app** (ou ⋮ → Instalar app).
-
-## Levar os dados da versão do Claude pro app novo
-
-São endereços diferentes, então os dados não passam sozinhos:
-
-1. Na versão antiga (link do Claude): **Ajustes → Copiar backup**.
-2. No app instalado: **Ajustes → Restaurar** → cole o texto → **Restaurar**.
-
-## Atualizar o app depois
-
-1. Edite o `index.html`.
-2. No `sw.js`, aumente a versão: `habitos-v1` → `habitos-v2`.
-3. `git add . && git commit -m "atualização" && git push`
-
-O celular pega a versão nova na próxima vez que abrir o app com internet.
-
-## Observações
-
-- Os dados ficam só no aparelho. Use **Ajustes → Baixar arquivo de backup** de vez em quando.
-- O repositório é público: o código (incluindo o recadinho) fica visível; os dados dela, não.
-- Lembretes aparecem com o app aberto. Pra alerta com o celular bloqueado, use o botão
-  "Adicionar lembrete ao Google Agenda" nos detalhes do hábito.
+Lembrete com o celular bloqueado não rola, porque app web não consegue mandar
+notificação desse jeito. Os lembretes aparecem com o app aberto, e nos detalhes
+de cada hábito tem um botão pra jogar o lembrete pro Google Agenda.
